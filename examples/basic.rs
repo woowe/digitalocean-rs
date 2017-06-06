@@ -6,14 +6,15 @@ use hyper::method::Method;
 
 extern crate digitalocean;
 use digitalocean::api::baseapi::BaseAPI;
+use digitalocean::api::traits::actions::Actions;
 
 fn main() {
     let key = "DIGITALOCEAN_TOKEN";
 
     match env::var(key) {
         Ok(token) => {
-            let mut baseapi = BaseAPI::new(Some("2a05c88b17f75d0dfa497a61185d168046aaa0ccf053bf19376138bb450c77e2"));
-            let mut json_resp = baseapi.request(Method::Get, "droplets", None).unwrap();
+            let mut baseapi = BaseAPI::new(Some(&token));
+            let mut json_resp = baseapi.list_all_actions().unwrap();
             println!("{:#?}", json_resp);
         },
         Err(e) => {
